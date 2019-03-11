@@ -40,8 +40,7 @@ public class CrawlingCentral extends Thread {
     public void run() {
         System.out.println("Initializing Crawling...");
         while (true) {
-            
-            
+
             if (pagesPending.isEmpty() && activeCrawlers.isEmpty()) {
                 System.out.println("-----------------------");
                 System.out.println("Crawling done! Showing Results:");
@@ -50,25 +49,23 @@ public class CrawlingCentral extends Thread {
             }
             checkCrawlersDistribution();
         }
-        
-        
+
     }
 
     protected void checkCrawlersDistribution() {
-        
-        
+
         int difference = (int) (Math.ceil(pagesPending.size() / 2.0) - activeCrawlers.size());
         if (difference > 0) {
             for (int i = 0; i < difference; i++) {
                 createCrawler();
             }
         }
-        
+
         /*
         if(activeCrawlers.size() < 1){
             createCrawler();
         }
-        */
+         */
     }
 
     public synchronized void requestTermination(Crawler crawler) {
@@ -97,7 +94,7 @@ public class CrawlingCentral extends Thread {
     /**
      * @return the pagesPending
      */
-    public  Set<String> getPagesPending() {
+    public Set<String> getPagesPending() {
 
         return pagesPending;
     }
