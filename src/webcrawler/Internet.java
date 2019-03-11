@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 public class Internet {
     private static Internet INSTANCE;
     private  Map<String, List<String>> data = new HashMap<>();
+    private String homeAddress;
     
     private Internet(String dataAddress) {
         try {
@@ -67,8 +68,15 @@ public class Internet {
             });
             
             data.put(address, links);
+            
+            if(homeAddress == null)
+                homeAddress = address;
         
         });
+    }
+    
+    public String getHomeAddress(){
+        return homeAddress;
     }
     
     /**

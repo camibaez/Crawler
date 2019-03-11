@@ -25,7 +25,7 @@ public class CrawlingCentral extends Thread {
     private Set<String> pagesVisited = new HashSet<String>();
 
     public CrawlingCentral() {
-        pagesPending.add(Internet.getInstance().generateRandomSeedAddress());
+        pagesPending.add(Internet.getInstance().getHomeAddress());
 
     }
 
@@ -38,7 +38,10 @@ public class CrawlingCentral extends Thread {
 
     @Override
     public void run() {
+        System.out.println("Initializing Crawling...");
         while (true) {
+            
+            
             if (pagesPending.isEmpty() && activeCrawlers.isEmpty()) {
                 System.out.println("-----------------------");
                 System.out.println("Crawling done! Showing Results:");
@@ -52,12 +55,20 @@ public class CrawlingCentral extends Thread {
     }
 
     protected void checkCrawlersDistribution() {
+        
+        
         int difference = (int) (Math.ceil(pagesPending.size() / 2.0) - activeCrawlers.size());
         if (difference > 0) {
             for (int i = 0; i < difference; i++) {
                 createCrawler();
             }
         }
+        
+        /*
+        if(activeCrawlers.size() < 1){
+            createCrawler();
+        }
+        */
     }
 
     public synchronized void requestTermination(Crawler crawler) {
