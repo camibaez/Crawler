@@ -27,27 +27,35 @@ import java.util.logging.Logger;
  * @author User
  */
 public class Internet {
+    private static Internet INSTANCE;
     private  Map<String, List<String>> data = new HashMap<>();
     
-    private Internet() {
+    private Internet(String dataAddress) {
         try {
-            loadData();
+            loadData(dataAddress);
         } catch (IOException ex) {
             Logger.getLogger(Internet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    public static void loadInstance(String dataAddress){
+        if(INSTANCE == null)
+            INSTANCE = new Internet(dataAddress);
+    }
+    
     public static Internet getInstance() {
-        return InternetHolder.INSTANCE;
+        if(INSTANCE == null){
+            throw new RuntimeException("Internet must be loaded first.");
+        }
+        return INSTANCE;
     }
     
-    private static class InternetHolder {
-
-        private static final Internet INSTANCE = new Internet();
-    }
-    
-    private void loadData() throws IOException{
-        String jsonContent = new String(Files.readAllBytes(Paths.get("data/data.json")), StandardCharsets.UTF_8);
+    /**
+     * 
+     * @throws IOException 
+     */
+    private void loadData(String dataAddress) throws IOException{
+        String jsonContent = new String(Files.readAllBytes(Paths.get(dataAddress)), StandardCharsets.UTF_8);
         JsonObject pageObject = new JsonParser().parse(jsonContent).getAsJsonObject();
         pageObject.getAsJsonArray("pages").forEach(element -> {
             JsonObject page = element.getAsJsonObject();
@@ -63,10 +71,20 @@ public class Internet {
         });
     }
     
+    /**
+     * 
+     * @param address
+     * @return
+     * @throws Exception 
+     */
     public List<String> retriveContent(String address) throws Exception{
         List<String> content = data.get(address);
         if(content == null)
             throw new Exception("404 Error");
         return content;
+    }
+    
+    public String generateRandomSeedAddress(){
+        return (String) data.keySet().toArray()[0];
     }
 }

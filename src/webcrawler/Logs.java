@@ -25,6 +25,12 @@ public class Logs {
     public static Logs getInstance() {
         return LogsHolder.INSTANCE;
     }
+
+    public void showResults() {
+        System.out.println("Success: " + succcess);
+        System.out.println("Skipped: " + skipped);
+        System.out.println("Errors: " + errors);
+    }
     
     private static class LogsHolder {
 

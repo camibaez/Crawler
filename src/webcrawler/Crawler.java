@@ -8,6 +8,7 @@ package webcrawler;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,21 +18,35 @@ import java.util.logging.Logger;
  * @author User
  */
 public class Crawler extends Thread{
-    private boolean isAlive = true;
+    protected boolean isAlive = true;
+    protected String id;
    
-    protected CrawlingCentral cc = CrawlingCentral.getInstance();
+    protected CrawlingCentral cc;
+
+    public Crawler(CrawlingCentral crawlingCentral) {
+        cc = crawlingCentral;
+        id = this.toString();
+    }
+    
+    
     
     public void requestAddress(){
+        System.out.println(id + ": requesting pending page to central...");
+        
         String address = cc.retrievePendingPage();
         if(address == null){
+            System.out.println(id + ": Not pending page available. :(");
+            
+            cc.requestTermination(this);
             isAlive = false;
             return;
         }
             
+        System.out.printf("%s: Pending page (%s) obtained. \nReady to crawl. :)\n", id, address);
         crawl(address);
     }
-    public void crawl(String address){
-        
+    protected void crawl(String address){
+        cc.getPagesVisited().add(address);
         List<String> links;
         try {
             links = Internet.getInstance().retriveContent(address);
@@ -49,7 +64,7 @@ public class Crawler extends Thread{
                 Logs.getInstance().getSkipped().add(link);
         }
         
-        cc.getPagesVisited().add(address);
+        
         //LOG purpose
         Logs.getInstance().getSucccess().add(address);
         
@@ -58,6 +73,11 @@ public class Crawler extends Thread{
     @Override
     public void run() {
        while(isAlive){
+           try {
+               Thread.sleep(500);
+           } catch (InterruptedException ex) {
+               Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+           }
            requestAddress();
        }
     }

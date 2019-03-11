@@ -16,7 +16,9 @@ public class WebCrawler {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Internet.getInstance();
+        Internet.loadInstance("data/data.json");
+        
+        new CrawlingCentral().start();
     }
     
 }
