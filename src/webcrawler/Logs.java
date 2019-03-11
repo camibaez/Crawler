@@ -6,13 +6,11 @@
 package webcrawler;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 /**
- *
- * @author User
+ * This class is only for logs purpose.
+ * @author Camilo Baez
  */
 public class Logs {
     private Set<String> succcess = new HashSet<>();

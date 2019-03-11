@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webcrawler;
 
-import com.sun.webkit.ThemeClient;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- *
- * @author User
+ * This class have the duty to coordinate the different crawlers.
+ * @author Camilo Baez
  */
 public class CrawlingCentral extends Thread {
 
@@ -26,7 +18,6 @@ public class CrawlingCentral extends Thread {
 
     public CrawlingCentral() {
         pagesPending.add(Internet.getInstance().getHomeAddress());
-
     }
 
     protected Crawler createCrawler() {
@@ -40,7 +31,7 @@ public class CrawlingCentral extends Thread {
     public void run() {
         System.out.println("Initializing Crawling...");
         while (true) {
-
+            //The central ends once all the crawlers have finished their pending tasks.
             if (pagesPending.isEmpty() && activeCrawlers.isEmpty()) {
                 System.out.println("-----------------------");
                 System.out.println("Crawling done! Showing Results:");
@@ -49,30 +40,34 @@ public class CrawlingCentral extends Thread {
             }
             checkCrawlersDistribution();
         }
-
     }
 
+    /**
+     * Loads the crawlers depending on the amount of pending pages to visit using a defined algorithm.
+     * 
+     */
     protected void checkCrawlersDistribution() {
-
         int difference = (int) (Math.ceil(pagesPending.size() / 2.0) - activeCrawlers.size());
         if (difference > 0) {
             for (int i = 0; i < difference; i++) {
                 createCrawler();
             }
         }
-
-        /*
-        if(activeCrawlers.size() < 1){
-            createCrawler();
-        }
-         */
     }
 
+    /**
+     * A requests from a crawler to the central once its tasks its done.
+     * @param crawler 
+     */
     public synchronized void requestTermination(Crawler crawler) {
         activeCrawlers.remove(crawler);
 
     }
 
+    /**
+     * Retrieve the first pending page. Simulates a Queue.
+     * @return 
+     */
     public synchronized String retrievePendingPage() {
         if (pagesPending.isEmpty()) {
             return null;

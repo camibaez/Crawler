@@ -5,15 +5,11 @@
  */
 package webcrawler;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,12 +19,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The representation of the internet in order to retrieve the information inside pages.
+ * The representation of the Internet in order to retrieve the information inside pages.
  * @author User
  */
 public class Internet {
     private static Internet INSTANCE;
+    /**
+     * Representation of the data contained in the json files.
+     */
     private  Map<String, List<String>> data = new HashMap<>();
+    
+    /**
+     * The first link in the links list. Only used in order to meet the project requirements.
+     */
     private String homeAddress;
     
     private Internet(String dataAddress) {
@@ -52,7 +55,7 @@ public class Internet {
     }
     
     /**
-     * 
+     * Loads the data contained in the json file.
      * @throws IOException 
      */
     private void loadData(String dataAddress) throws IOException{
@@ -80,7 +83,7 @@ public class Internet {
     }
     
     /**
-     * 
+     * Simulates an http request to a web server.
      * @param address
      * @return
      * @throws Exception 
@@ -92,7 +95,4 @@ public class Internet {
         return content;
     }
     
-    public String generateRandomSeedAddress(){
-        return (String) data.keySet().toArray()[0];
-    }
 }
