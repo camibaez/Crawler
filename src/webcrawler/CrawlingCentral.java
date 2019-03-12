@@ -33,9 +33,7 @@ public class CrawlingCentral {
         while (true) {
             //The central ends once all the crawlers have finished their pending tasks.
             if (pagesPending.isEmpty() && activeCrawlers.isEmpty()) {
-                System.out.println("-----------------------");
-                System.out.println("Crawling done! Showing Results:");
-                Logs.getInstance().showResults();
+                
                 break;
             }
             checkCrawlersDistribution();
