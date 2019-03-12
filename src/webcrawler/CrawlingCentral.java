@@ -9,7 +9,7 @@ import java.util.TreeSet;
  * This class have the duty to coordinate the different crawlers.
  * @author Camilo Baez
  */
-public class CrawlingCentral extends Thread {
+public class CrawlingCentral {
 
     protected Set<Crawler> activeCrawlers = new HashSet<>();
 
@@ -27,7 +27,7 @@ public class CrawlingCentral extends Thread {
         return crawler;
     }
 
-    @Override
+    
     public void run() {
         System.out.println("Initializing Crawling...");
         while (true) {

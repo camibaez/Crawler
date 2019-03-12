@@ -37,6 +37,6 @@ public class Internet1Test {
     @Test
     public void internet1Test(){
         System.out.println("Internet1.json Test");
-        new webcrawler.CrawlingCentral().start();
+        new webcrawler.CrawlingCentral().run();
     }
 }
